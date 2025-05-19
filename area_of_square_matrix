@@ -1,0 +1,38 @@
+def matrix(rows):
+    matrix=[]
+    for i in range(rows):
+        row=input().split()
+        matrix.append(row)
+    return matrix
+
+def check_if_sub_matrix_contains_zero(matrix,i,j,k,p):
+    for m in range(0,k+1):
+        for n in range(0,p+1):
+            if matrix[i+m][j+n]=="O":
+                return True
+    return False
+
+def get_max_sub_matrix_area(matrix,rows,columns,i,j):
+    max_sub_matrix_area=0
+    for k in range(0, rows-i):
+        for p in range(0,columns-j):
+            if (k!=p) :
+                continue
+            sub_matrix_have_0=check_if_sub_matrix_contains_zero(matrix,i,j,k,p)
+            if not sub_matrix_have_0:
+                max_sub_matrix_area=max(max_sub_matrix_area,(k+1)*(p+1))
+    return max_sub_matrix_area
+
+def get_max_area_of_square(matrix,rows,columns):
+    max_area_of_square=0
+    for i in range(rows):
+        for j in range(columns):
+            if (matrix[i][j]=="X"):
+                max_sub_matrix_area = get_max_sub_matrix_area(matrix,rows,columns,i,j)
+                max_area_of_square=max(max_area_of_square,max_sub_matrix_area)
+    return max_area_of_square
+
+rows,columns=map(int,input().split(" "))
+matrix=matrix(rows)
+max_area_of_square=get_max_area_of_square(matrix,rows,columns)
+print(max_area_of_square)
